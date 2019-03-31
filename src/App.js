@@ -1,24 +1,44 @@
+/*
+
+How to use worker with CRA without ejecting
+
+*/
+  
+
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+import WebWorker from './WebWorker'
+import MyWorker from './MyWorker'
+
+
+console.log('Init worker...')
+
+// Worker init
+const workerInstance = new WebWorker(MyWorker) 
+
+
+// Listening for messages from worker
+workerInstance.addEventListener("message", e => {
+
+  console.log('[MAIN] MSG FROM WORKER: ', e.data)
+
+
+}, false)
+
+
+workerInstance.postMessage("Hi, worker! I'm main thread!")
+
+
 class App extends Component {
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <p>
-            Edit <code>src/App.js</code> and save to reload.
+            Enable DevTools/console to see messages!
           </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
         </header>
       </div>
     );
